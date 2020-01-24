@@ -39,8 +39,7 @@ namespace PollyPolicy.App
         public void Run()
         {
             retries = 0;
-            var retries1 = 0;
-            var cancellationToken = new CancellationTokenSource();
+            var retries1 = 0;           
 
             var waitAndRetryPolicy1 = Policy.Handle<Exception>()
                 .WaitAndRetryForever(
@@ -84,18 +83,16 @@ namespace PollyPolicy.App
             PolicyWrap policyWrap = Policy.Wrap(waitAndRetryPolicy1, waitAndRetryPolicy, circuitBreakerPolicy);
 
             var ctx = new Context();
-            policyWrap.Execute((ct, token) =>
+            policyWrap.Execute((ct) =>
            {
-               Console.WriteLine("Please enter your choice");
-               if (!token.IsCancellationRequested)
-                   Execute(cancellationToken);
-
-           }, ctx, cancellationToken.Token);
+               Console.WriteLine("Please enter your choice fail/other word");
+               Execute();
+           }, ctx);
 
 
         }
 
-        private void Execute(CancellationTokenSource cancellationTokenSource)
+        private void Execute()
         {
             var input = Console.ReadLine();
             if (string.Equals(input, "fail", StringComparison.InvariantCultureIgnoreCase))
@@ -104,8 +101,7 @@ namespace PollyPolicy.App
             }
             else
             {
-                Console.WriteLine("Call was successful");
-                cancellationTokenSource.Cancel();
+                Console.WriteLine("Call was successful");                
             }
 
 

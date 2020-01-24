@@ -1,3 +1,8 @@
+/*
+Polly sample that wraps three policies. WaitAndRetryForever, WaitAndRetry, and Circuit Breaker.
+So, if three retries fail, the circuit breaker will open, so two policies (WaitAndRetry and Circuit Breaker) won't be executed, but the outer policy will be running forever with delay. Once the desired result is achieved, the CancellationSource token will be canceled and forever will stop the execution.
+Note: this will block the thread forever so it should always run in the background thread.
+*/
 using Polly;
 using Polly.CircuitBreaker;
 using Polly.Wrap;

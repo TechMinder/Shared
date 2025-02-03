@@ -17,7 +17,7 @@ index=app_logs
 | spath input=log_message output=message
 | search message="error"
 | timechart span=1h count
-
+```
 
 
 
